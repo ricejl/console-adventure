@@ -14,6 +14,8 @@ namespace ConsoleAdventure.Project.Models
         {
             Name = name;
             Description = description;
+            Items = new List<Item>();
+            Exits = new Dictionary<string, IRoom>();
         }
     }
 }
