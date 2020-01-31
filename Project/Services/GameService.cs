@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ConsoleAdventure.Project.Interfaces;
 using ConsoleAdventure.Project.Models;
@@ -8,15 +9,24 @@ namespace ConsoleAdventure.Project
     {
         private IGame _game { get; set; }
 
-        public List<string> Messages { get; set; }
+        public List<Message> Messages { get; set; }
         public GameService()
         {
             _game = new Game();
-            Messages = new List<string>();
+            List<Message> Messages = new List<Message>();
         }
         public void Go(string direction)
         {
-            throw new System.NotImplementedException();
+            //checks if there's an exit in that room at that direction
+            if (_game.CurrentRoom.Exits.ContainsKey(direction))
+            {
+                _game.CurrentRoom = _game.CurrentRoom.Exits[direction];
+                Messages.Add(new Message($"You walk {direction} into the {_game.CurrentRoom.Name}."));
+            }
+            else
+            {
+                Messages.Add(new Message("You ran into a wall. Try a different direction.", ConsoleColor.Red));
+            }
         }
         public void Help()
         {
@@ -47,12 +57,36 @@ namespace ConsoleAdventure.Project
 
         public void Setup(string playerName)
         {
-            throw new System.NotImplementedException();
+            //if string is at least one character and not empty space(s), assign playerName to current player
+            //game.currentplayer = playerName
+            if (String.IsNullOrWhiteSpace(playerName) || String.IsNullOrEmpty(playerName))
+            {
+                Messages.Add(new Message("Invalid name. Please try again."));
+            }
+            else
+            {
+                _game.CurrentPlayer.Name = playerName;
+            }
+
         }
         ///<summary>When taking an item be sure the item is in the current room before adding it to the player inventory, Also don't forget to remove the item from the room it was picked up in</summary>
         public void TakeItem(string itemName)
         {
-            throw new System.NotImplementedException();
+            foreach (var item in _game.CurrentRoom.Items)
+            {
+                if (item.Name == itemName)
+                {
+                    _game.CurrentPlayer.Inventory.Add(item); //add to player inventory
+                }
+                else
+                {
+                    //error, sorry there is no
+                }
+            }
+
+            //if room contains item, add to inventory
+            //else give error message
+
         }
         ///<summary>
         ///No need to Pass a room since Items can only be used in the CurrentRoom

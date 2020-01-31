@@ -46,6 +46,13 @@ namespace ConsoleAdventure.Project.Models
             Den.Items.Add(Matchbook);
             Den.Items.Add(Book);
             Tower.Items.Add(Bathtub);
+
+            CurrentRoom = Yard;
+        }
+
+        public Game()
+        {
+            Setup();
         }
     }
 }
