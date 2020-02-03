@@ -20,8 +20,17 @@ namespace ConsoleAdventure.Project
             //checks if there's an exit in that room at that direction
             if (_game.CurrentRoom.Exits.ContainsKey(direction))
             {
+                Console.Clear();
                 _game.CurrentRoom = _game.CurrentRoom.Exits[direction];
-                Messages.Add(new Message($"You walk {direction} into the {_game.CurrentRoom.Name}."));
+                Messages.Add(new Message($"You walk {direction} into the {_game.CurrentRoom.Name}.\n"));
+                Messages.Add(new Message($"{_game.CurrentRoom.Description}"));
+                if (_game.CurrentRoom.Items.Count > 0)
+                {
+                    foreach (Item item in _game.CurrentRoom.Items)
+                    {
+                        Messages.Add(new Message($"There is a {item.Name} in the room. {item.Description}"));
+                    }
+                }
             }
             else
             {
@@ -30,12 +39,16 @@ namespace ConsoleAdventure.Project
         }
         public void Help()
         {
-            Messages.Add(new Message("-- Menu --\n*quit - quit the game\n*go + direction - to change rooms (eg, go east)\nuse + item--utilize object (eg, use key)\ntake + item - add item to inventory\nlook - gives room description\ninventory - see list of items you've taken\n"));
+            Messages.Add(new Message("-- Menu --\nQuit - quit the game\nGo + direction - to change rooms (eg, go east)\nUse + item--utilize object (eg, use key)\nTake + item - add item to inventory\nLook - gives room description\nInventory - see list of items you've taken\n"));
         }
 
         public void Inventory()
         {
-            Messages.Add(new Message($"Your items:\n{_game.CurrentPlayer.Inventory}"));
+            Messages.Add(new Message("Your item(s):"));
+            foreach (Item item in _game.CurrentPlayer.Inventory)
+            {
+                Messages.Add(new Message($"{item.Name}"));
+            }
         }
 
         public void Look()
@@ -72,17 +85,18 @@ namespace ConsoleAdventure.Project
         ///<summary>When taking an item be sure the item is in the current room before adding it to the player inventory, Also don't forget to remove the item from the room it was picked up in</summary>
         public void TakeItem(string itemName)
         {
-            foreach (var item in _game.CurrentRoom.Items)
+            // foreach (Item item in _game.CurrentRoom.Items)
+            // {
+            if (_game.CurrentRoom.Items[0].Name == itemName)
             {
-                if (item.Name == itemName)
-                {
-                    _game.CurrentPlayer.Inventory.Add(item);
-                    _game.CurrentRoom.Items.Remove(item);
-                }
-                else
-                {
-                    Messages.Add(new Message($"Sorry, there is no {itemName} to take."));
-                }
+                _game.CurrentPlayer.Inventory.Add(_game.CurrentRoom.Items[0]);
+                _game.CurrentRoom.Items.Remove(_game.CurrentRoom.Items[0]);
+                Messages.Add(new Message($"Taken: {itemName}"));
+            }
+            else
+            {
+                Messages.Add(new Message($"Sorry, there is no {itemName} to take."));
+                // }
             }
 
         }

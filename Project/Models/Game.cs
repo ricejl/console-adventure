@@ -15,15 +15,16 @@ namespace ConsoleAdventure.Project.Models
             Room Kitchen = new Room("Kitchen", "Dusty pans hang from the ceiling and a large selection of heavily used kitchen implements are scattered along the countertops. The room feels colder than the rest of the house. The metallic air permeates the entire space.");
             Room DrawingRoom = new Room("Drawing Room", "Ancient, floral wallpaper curls from the walls at yellowed seams. Once heavily trafficked, the stillness is broken only by your footsteps across the creaking, wooden floorboards.");
             Room Cellar = new Room("Cellar", "The space around you feels like the inside of a great stone beast, heavy with moisture and pulsating with life. You are unable to see anything.");
-            Room Yard = new Room("Front yard", "The plants are overgrown and wild. To the north is the front door. Adjacent to that, just to the east is are a set of double doors that look like they lead into the space beneath the house.");
+            Room Yard = new Room("Front yard", "The plants are overgrown and wild. To the north is the front door.");
+            //  Adjacent to that, just to the east are a set of double doors that look like they lead into the space beneath the house.");
 
-            Item Key = new Item("Key", "Worn edges and tiny scratches hint at a long history of use. There's an oddly-shaped bit at the end of a long shank with a an ornate bow at the top reminiscent of a gape-mouthed lion.");
-            Item Kettle = new Item("Tea Kettle", "A plump, white body intricately decorated on the outside with fine, hand-painted blue strokes.");
-            Item Hammer = new Item("Hammer", "Its rusted head and splintered handle suggests it has long been exposed to the elements, but it nonetheless appears sturdy.");
-            Item Bucket = new Item("Bucket", "A wooden bucket held together with two thin metal rings. Despite its age it might still hold water.");
-            Item Matchbook = new Item("Matchbook", "The label says these came from a pub at the village center and there are only two matches torn out. They can't have been here long.");
-            Item Book = new Item("Book", "The title on the book's spine is hard to read--The Eternal Path or is that Bath? Rath?");
-            Item Bathtub = new Item("Bathtub", "The clawfoot tub is situated at the room's center, and every minute or two the faucet that feeds it is dripping water.");
+            Item key = new Item("key", "Worn edges and tiny scratches hint at a long history of use. There's an oddly-shaped bit at the end of a long shank with a an ornate bow at the top reminiscent of a gape-mouthed lion.");
+            // Item kettle = new Item("kettle", "A plump, white body intricately decorated on the outside with fine, hand-painted blue strokes.");
+            // Item hammer = new Item("hammer", "Its rusted head and splintered handle suggests it has long been exposed to the elements, but it nonetheless appears sturdy.");
+            // Item bucket = new Item("bucket", "A wooden bucket held together with two thin metal rings. Despite its age it might still hold water.");
+            Item matchbook = new Item("matchbook", "The label says these came from a pub at the village center and there are only two matches torn out. They can't have been here long.");
+            Item book = new Item("book", "The title on the book's spine is hard to read--The Eternal Path or is that Bath? Rath?");
+            Item bathtub = new Item("bathtub", "The clawfoot tub is situated at the room's center, and every minute or two the faucet that feeds it is dripping water.");
 
             // Add exits to room
             Yard.Exits.Add("north", DrawingRoom);
@@ -39,13 +40,13 @@ namespace ConsoleAdventure.Project.Models
             // Cellar.Exits.Add("up", Yard);
 
             // Add items to rooms
-            Yard.Items.Add(Hammer);
-            DrawingRoom.Items.Add(Kettle);
-            DrawingRoom.Items.Add(Key);
-            Kitchen.Items.Add(Bucket);
-            Den.Items.Add(Matchbook);
-            Den.Items.Add(Book);
-            Tower.Items.Add(Bathtub);
+            // Yard.Items.Add(hammer);
+            // DrawingRoom.Items.Add(kettle);
+            // Kitchen.Items.Add(bucket);
+            DrawingRoom.Items.Add(key);
+            Den.Items.Add(matchbook);
+            Den.Items.Add(book);
+            Tower.Items.Add(bathtub);
 
             CurrentRoom = Yard;
 
