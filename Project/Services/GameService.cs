@@ -18,9 +18,13 @@ namespace ConsoleAdventure.Project
         public void Go(string direction)
         {
             //checks if there's an exit in that room at that direction
-            if (_game.CurrentRoom.Exits.ContainsKey(direction))
+            if (_game.CurrentRoom.Exits.ContainsKey(direction) && _game.CurrentRoom.Exits[direction].Locked)
             {
-                Console.Clear();
+                Messages.Add(new Message("It's locked.", ConsoleColor.DarkYellow));
+            }
+            else if (_game.CurrentRoom.Exits.ContainsKey(direction) && !_game.CurrentRoom.Exits[direction].Locked)
+            {
+                Messages.Clear();
                 _game.CurrentRoom = _game.CurrentRoom.Exits[direction];
                 Messages.Add(new Message($"You walk {direction} into the {_game.CurrentRoom.Name}.\n"));
                 Messages.Add(new Message($"{_game.CurrentRoom.Description}"));
@@ -105,9 +109,37 @@ namespace ConsoleAdventure.Project
         ///Make sure you validate the item is in the room or player inventory before
         ///being able to use the item
         ///</summary>
+        private bool _hasItem = false;
+        private bool _itemInRoom = false;
         public void UseItem(string itemName)
         {
-            throw new System.NotImplementedException();
+            foreach (Item item in _game.CurrentPlayer.Inventory)
+            {
+                if (itemName == item.Name)
+                { _hasItem = true; }
+            }
+            foreach (Item item in _game.CurrentRoom.Items)
+            {
+                if (itemName == item.Name)
+                { _itemInRoom = true; }
+            }
+            if (_itemInRoom || _hasItem)
+            {
+                switch (itemName)
+                {
+                    case "key":
+                        if (_game.CurrentRoom.Name == "Den")
+                        {
+                            _game.CurrentRoom.Exits["up"].Locked = false;
+                            Messages.Add(new Message("You slide the key into the door and with a heavy, echoing clank it unlocks and groans open."));
+                        }
+                        break;
+                    case "bathtub":
+
+                        break;
+                }
+
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ namespace ConsoleAdventure.Project.Models
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public bool Locked { get; set; }
         public List<Item> Items { get; set; }
         public Dictionary<string, IRoom> Exits { get; set; }
 
@@ -26,10 +27,11 @@ namespace ConsoleAdventure.Project.Models
         //     //if no, return same room and give feedback
         // }
 
-        public Room(string name, string description)
+        public Room(string name, string description, bool locked)
         {
             Name = name;
             Description = description;
+            Locked = locked;
             Items = new List<Item>();
             Exits = new Dictionary<string, IRoom>();
         }

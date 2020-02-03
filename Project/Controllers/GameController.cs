@@ -53,6 +53,7 @@ namespace ConsoleAdventure.Project.Controllers
                     _gameService.Help();
                     break;
                 case "go":
+                    Console.Clear();
                     _gameService.Go(option);
                     break;
                 case "take":
