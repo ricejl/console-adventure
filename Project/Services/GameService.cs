@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ConsoleAdventure.Project.Controllers;
 using ConsoleAdventure.Project.Interfaces;
 using ConsoleAdventure.Project.Models;
 
@@ -10,6 +11,8 @@ namespace ConsoleAdventure.Project
         private IGame _game { get; set; }
 
         public List<Message> Messages { get; set; }
+
+        public bool Active { get; set; } = true;
         public GameService()
         {
             _game = new Game();
@@ -43,15 +46,15 @@ namespace ConsoleAdventure.Project
         }
         public void Help()
         {
-            Messages.Add(new Message("-- Menu --\nQuit - quit the game\nGo + direction - to change rooms (eg, go east)\nUse + item--utilize object (eg, use key)\nTake + item - add item to inventory\nLook - gives room description\nInventory - see list of items you've taken\n"));
+            Messages.Add(new Message("-- Menu --\nQuit - quit the game\nReset - start over\nGo + direction - to change rooms (eg, go east)\nUse + item--utilize object (eg, use key)\nTake + item - add item to inventory\nLook - gives room description\nInventory - see list of items you've taken\n"));
         }
 
         public void Inventory()
         {
-            Messages.Add(new Message("Your item(s):"));
+            Messages.Add(new Message("\nYour item(s):", ConsoleColor.Magenta));
             foreach (Item item in _game.CurrentPlayer.Inventory)
             {
-                Messages.Add(new Message($"{item.Name}"));
+                Messages.Add(new Message($"{item.Name}", ConsoleColor.Magenta));
             }
         }
 
@@ -69,7 +72,9 @@ namespace ConsoleAdventure.Project
         ///</summary>
         public void Reset()
         {
-            throw new System.NotImplementedException();
+            Console.Clear();
+            GameController gc = new GameController();
+            gc.Run();
         }
 
         public void Setup(string playerName)
@@ -89,16 +94,15 @@ namespace ConsoleAdventure.Project
         ///<summary>When taking an item be sure the item is in the current room before adding it to the player inventory, Also don't forget to remove the item from the room it was picked up in</summary>
         public void TakeItem(string itemName)
         {
-            //FIXME cannot take bathtub
             if (_game.CurrentRoom.Items[0].Name == itemName)
             {
                 _game.CurrentPlayer.Inventory.Add(_game.CurrentRoom.Items[0]);
                 _game.CurrentRoom.Items.Remove(_game.CurrentRoom.Items[0]);
-                Messages.Add(new Message($"Taken: {itemName}"));
+                Messages.Add(new Message($"\nTaken: {itemName}", ConsoleColor.DarkGreen));
             }
             else
             {
-                Messages.Add(new Message($"Sorry, there is no {itemName} to take."));
+                Messages.Add(new Message($"Sorry, there is no {itemName} to take.", ConsoleColor.Red));
                 // }
             }
 
@@ -138,22 +142,30 @@ namespace ConsoleAdventure.Project
                         {
                             Messages.Add(new Message("You turn on the faucet. A brilliantly clear liquid begins to fill the tub. It looks iridescent, almost glowing. You're not sure if it's the effect of the moonlight or something else entirely. You climb inside and sink down in the water, closing your eyes as you feel the world receding."));
                             Messages.Add(new Message("You win.", ConsoleColor.DarkCyan));
+                            Active = false;
                         }
-                        //FIXME give option to reset
+                        else
+                        {
+                            Messages.Add(new Message("The bathrub is no longer connected to a water source and is unusable."));
+                        }
                         break;
                     case "matchbook":
                         if (_game.CurrentRoom.Name != "Cellar")
                         {
                             Messages.Add(new Message("You strike a match and it catches on the curtain. Like a spark on gasoline, it lights afire and the whole room is engulfed."));
                             Messages.Add(new Message("Game over", ConsoleColor.DarkRed));
+                            Active = false;
                         }
                         else
                         {
                             Messages.Add(new Message("You strike a match and see the cellar is teaming with cockroaches scrambling over each other to get away from the light source."));
                         }
-                        //FIXME end game
-
                         break;
+                    default:
+                        {
+                            Messages.Add(new Message($"The {itemName} cannot be used in this room."));
+                            break;
+                        }
                 }
 
             }

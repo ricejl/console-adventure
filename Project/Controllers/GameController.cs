@@ -18,19 +18,20 @@ namespace ConsoleAdventure.Project.Controllers
             Console.WriteLine("Enter your name.");
             string playerName = Console.ReadLine();
             _gameService.Setup(playerName);
-            while (_creeping)
+            while (_creeping && _gameService.Active)
             {
                 PrintMessages();
                 GetUserInput();
             }
-            Console.Clear();
+            PrintMessages();
+            //FIXME clear console before goodbye
             Console.WriteLine("Okay, bye.");
         }
 
         //NOTE Gets the user input, calls the appropriate command, and passes on the option if needed.
         public void GetUserInput()
         {
-            Console.WriteLine("What would you like to do? Type 'help' for options.");
+            Console.WriteLine("\nWhat would you like to do? Type 'help' for options.");
             string input = Console.ReadLine().ToLower() + " ";
             string command = input.Substring(0, input.IndexOf(" "));
             string option = input.Substring(input.IndexOf(" ") + 1).Trim();
@@ -42,6 +43,9 @@ namespace ConsoleAdventure.Project.Controllers
             {
                 case "quit":
                     _creeping = false;
+                    break;
+                case "reset":
+                    _gameService.Reset();
                     break;
                 case "look":
                     _gameService.Look();
@@ -63,7 +67,7 @@ namespace ConsoleAdventure.Project.Controllers
                     _gameService.UseItem(option);
                     break;
                 default:
-                    System.Console.WriteLine("Invalid command");
+                    System.Console.WriteLine("Invalid command\n");
                     break;
             }
 

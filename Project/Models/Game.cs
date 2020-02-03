@@ -36,6 +36,7 @@ namespace ConsoleAdventure.Project.Models
             Den.Exits.Add("east", DrawingRoom);
             Den.Exits.Add("up", Tower);
             Tower.Exits.Add("down", Den);
+            Cellar.Exits.Add("up", Kitchen);
             // Yard.Exits.Add("down", Cellar);
             // Cellar.Exits.Add("up", Yard);
 
