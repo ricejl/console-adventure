@@ -48,6 +48,9 @@ namespace ConsoleAdventure.Project.Models
             Tower.Items.Add(Bathtub);
 
             CurrentRoom = Yard;
+
+            Player name = new Player("");
+            CurrentPlayer = name;
         }
 
         public Game()

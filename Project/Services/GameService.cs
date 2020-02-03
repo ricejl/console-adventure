@@ -13,7 +13,7 @@ namespace ConsoleAdventure.Project
         public GameService()
         {
             _game = new Game();
-            List<Message> Messages = new List<Message>();
+            Messages = new List<Message>();
         }
         public void Go(string direction)
         {
@@ -30,17 +30,17 @@ namespace ConsoleAdventure.Project
         }
         public void Help()
         {
-            throw new System.NotImplementedException();
+            Messages.Add(new Message("-- Menu --\n*quit - quit the game\n*go + direction - to change rooms (eg, go east)\nuse + item--utilize object (eg, use key)\ntake + item - add item to inventory\nlook - gives room description\ninventory - see list of items you've taken\n"));
         }
 
         public void Inventory()
         {
-            throw new System.NotImplementedException();
+            Messages.Add(new Message($"Your items:\n{_game.CurrentPlayer.Inventory}"));
         }
 
         public void Look()
         {
-            throw new System.NotImplementedException();
+            Messages.Add(new Message($"{_game.CurrentRoom.Description}"));
         }
 
         public void Quit()
@@ -58,13 +58,13 @@ namespace ConsoleAdventure.Project
         public void Setup(string playerName)
         {
             //if string is at least one character and not empty space(s), assign playerName to current player
-            //game.currentplayer = playerName
             if (String.IsNullOrWhiteSpace(playerName) || String.IsNullOrEmpty(playerName))
             {
                 Messages.Add(new Message("Invalid name. Please try again."));
             }
             else
             {
+                //?? cannot do this because CurrentPlayer is not instantiated and cannot be instantiated because it's an interface
                 _game.CurrentPlayer.Name = playerName;
             }
 
@@ -76,16 +76,14 @@ namespace ConsoleAdventure.Project
             {
                 if (item.Name == itemName)
                 {
-                    _game.CurrentPlayer.Inventory.Add(item); //add to player inventory
+                    _game.CurrentPlayer.Inventory.Add(item);
+                    _game.CurrentRoom.Items.Remove(item);
                 }
                 else
                 {
-                    //error, sorry there is no
+                    Messages.Add(new Message($"Sorry, there is no {itemName} to take."));
                 }
             }
-
-            //if room contains item, add to inventory
-            //else give error message
 
         }
         ///<summary>

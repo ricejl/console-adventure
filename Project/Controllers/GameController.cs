@@ -8,7 +8,7 @@ namespace ConsoleAdventure.Project.Controllers
 
     public class GameController : IGameController
     {
-        private GameService _gameService = new GameService();
+        private GameService _gameService { get; set; } = new GameService();
         private bool _creeping = true;
 
         //NOTE Makes sure everything is called to finish Setup and Starts the Game loop
@@ -20,7 +20,7 @@ namespace ConsoleAdventure.Project.Controllers
             _gameService.Setup(playerName);
             while (_creeping)
             {
-                Print();
+                PrintMessages();
                 GetUserInput();
             }
             Console.Clear();
@@ -36,11 +36,40 @@ namespace ConsoleAdventure.Project.Controllers
             string option = input.Substring(input.IndexOf(" ") + 1).Trim();
             //NOTE this will take the user input and parse it into a command and option.
             //IE: take silver key => command = "take" option = "silver key"
+            //commands = quit, inventory, look
+            Console.Clear();
+            switch (command)
+            {
+                case "quit":
+                    _creeping = false;
+                    break;
+                case "look":
+                    _gameService.Look();
+                    break;
+                case "inventory":
+                    _gameService.Inventory();
+                    break;
+                case "help":
+                    _gameService.Help();
+                    break;
+                case "go":
+                    _gameService.Go(option);
+                    break;
+                case "take":
+                    _gameService.UseItem(option);
+                    break;
+                case "use":
+                    _gameService.UseItem(option);
+                    break;
+                default:
+                    System.Console.WriteLine("Invalid command");
+                    break;
+            }
 
         }
 
         //NOTE this should print your messages for the game.
-        private void Print()
+        private void PrintMessages()
         {
             foreach (Message message in _gameService.Messages)
             {
